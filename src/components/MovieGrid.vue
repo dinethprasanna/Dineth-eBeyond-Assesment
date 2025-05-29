@@ -4,15 +4,47 @@ import MovieCard from '@/components/MovieCard.vue';
 
 import { defineProps } from 'vue';
 
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+onMounted(() => {
+    gsap.from(".movie-grid .mov-section-header", {
+        y: 200,
+        opacity: 0.5,
+        duration: 0.6,
+        ease: "ease",
+        scrollTrigger: {
+            trigger: ".movie-grid",
+            start: "top 88%",
+            end: "top 82%",
+        }
+    });
+
+    gsap.from(".movie-grid .movie_cards_grid ", {
+        y: 100,
+        scale: 0.8,
+        opacity: 0.5,
+        duration: 1,
+        ease: "ease",
+        scrollTrigger: {
+            trigger: ".movie-grid .mov-section-header",
+            start: "top 90%",
+            end: "top 80%",
+        }
+    });
+});
+
 defineProps({
-  title: {
-    type: String,
-    default: 'Collect your favourites',
-  },
-  search_box_text: {
-    type: String,
-    default: 'Search title and add to grid',
-  },
+    title: {
+        type: String,
+        default: 'Collect your favourites',
+    },
+    search_box_text: {
+        type: String,
+        default: 'Search title and add to grid',
+    },
 });
 
 
@@ -67,10 +99,12 @@ onMounted(() => {
         <!-- Header -->
         <div
             class="mov-section-header max-w-[1280px] mx-auto border-b border-white mb-8 px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <h2 class="text-left w-full md:w-auto text-2xl font-medium text-white sm:text-3xl md:text-4xl mb-2 md:mb-6">{{ title }}</h2>
+            <h2 class="text-left w-full md:w-auto text-2xl font-medium text-white sm:text-3xl md:text-4xl mb-2 md:mb-6">
+                {{ title }}</h2>
 
             <!-- Search Form -->
-            <div class="search-form flex items-center bg-[#1c1c1c] border border-white rounded-md mb-4 md:mb-0 w-full md:w-auto">
+            <div
+                class="search-form flex items-center bg-[#1c1c1c] border border-white rounded-md mb-4 md:mb-0 w-full md:w-auto">
                 <form class="w-full" @submit="handleSearch">
                     <div class="relative text-white">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -97,20 +131,20 @@ onMounted(() => {
                 </form>
             </div>
 
-            
+
 
 
         </div>
 
         <!-- Search Results -->
         <div v-if="searchQuery && searchResults.length"
-            class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            class="movie_cards_grid max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <MovieCard v-for="movie in searchResults" :key="movie.id" :movie="movie" :canAdd="true" @add="addToGrid" />
         </div>
 
         <!-- Main Grid -->
         <div v-if="!searchQuery"
-            class="movie-cards-grid max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            class="movie_cards_grid  max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <MovieCard v-for="movie in [...defaultMovies, ...addedMovies]" :key="movie.id" :movie="movie"
                 :canClose="true" @close="removeFromGrid" />
         </div>

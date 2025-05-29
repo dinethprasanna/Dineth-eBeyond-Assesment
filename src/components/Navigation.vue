@@ -3,7 +3,24 @@ import { RouterLink, useRoute } from "vue-router";
 import logo from '@/assets/Logos/Logo White.svg';
 import hamburg_menu_icon from '@/assets/Icons/Menu White.svg';
 import hamburg_menu_close_icon from '@/assets/Icons/Close White.svg';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { gsap } from 'gsap';
+
+onMounted(() => {
+    gsap.from(".site-logo", {
+        x: -100,
+        duration: 1,
+        ease: "ease",
+        opacity: 0
+    });
+
+    gsap.from(".nav-links-area *", {
+        x: 100,
+        duration: 1,
+        ease: "ease",
+        opacity: 0
+    });
+});
 
 const isActivelink = (routePath) => {
     const route = useRoute();
@@ -21,7 +38,7 @@ const currentIcon = computed(() => isMenuOpen.value ? hamburg_menu_close_icon : 
     <header class="px-2 md:px-2 lg:px-4 py-6 border-b border-gray-900">
         <nav class="max-w-[1280px] mx-auto flex flex-row justify-between items-center">
             <RouterLink to="/">
-                <div class="logo max-w-[164px]"><img :src="logo" alt="Logo" width="100%" height="auto" /></div>
+                <div class="site-logo max-w-[164px]"><img :src="logo" alt="Logo" width="100%" height="auto" /></div>
             </RouterLink>
 
             <div class="nav-links-area flex justify-between items-center relative">
@@ -55,8 +72,8 @@ const currentIcon = computed(() => isMenuOpen.value ? hamburg_menu_close_icon : 
                 <div class="hamburg-menu-icon cursor-pointer" @click="toggleMenu">
                     <img :src="currentIcon" alt="Logo" width="100%" height="auto" class="w-[32px] " />
                 </div>
-                <div class="collapsed-menu-area transition-all duration-300 bg-black h-full lg:h-auto p-6 pr-3 lg:p-2 fixed z-12 right-0 top-0 lg:absolute lg:top-[54px] lg:right-[-8px] block"
-                    :class="{ 'hidden': !isMenuOpen }">
+                <div class="collapsed-menu-area transition-all duration-300 bg-black h-full lg:h-auto p-6 pr-3 lg:p-2 fixed z-12 right-0 top-0 lg:absolute lg:top-[54px] lg:right-[-8px] block lg:max-h-fit overflow-hidden"
+                    :class="{ 'hidden lg:block lg:!max-h-0 lg:!p-0': !isMenuOpen }">
                     <div class="menu-close text-white lg:hidden w-full " @click="toggleMenu"><img
                             :src="hamburg_menu_close_icon" alt="Close" width="100%" height="auto" class="w-[28px] ml-auto mt-2 mr-0 pb-2 mb-4" />
                     </div>

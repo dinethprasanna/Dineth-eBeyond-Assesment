@@ -1,5 +1,22 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, onMounted } from 'vue';
+
+import { gsap } from 'gsap';
+
+onMounted(() => {
+    gsap.from(".hero-image", {
+        y: 100,
+        duration: 1,
+        ease: "ease",
+        opacity: 0
+    });
+
+    gsap.from(".hero .hero-text-cont", {
+        x: 100,
+        duration: 1.5,
+        ease: "elastic.out(1,0.3)",
+    });
+});
 
 defineProps({
   title: {
@@ -25,7 +42,7 @@ defineProps({
       
     </div>
     <div class="max-w-[1280px] mx-auto flex flex-col items-start px-6 md:px-12 lg:px-4">
-      <div class="text-left pt-12">
+      <div class="hero-text-cont text-left pt-12">
         <h1 class="text-3xl font-medium text-white sm:text-4xl md:text-5xl mb-6">
           {{ title }}
         </h1>

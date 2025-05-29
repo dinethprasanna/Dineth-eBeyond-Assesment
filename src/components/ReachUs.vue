@@ -1,7 +1,39 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, onMounted } from 'vue';
 import ContactUsForm from '@/components/ContactUsForm.vue';
 import MapLocation from '@/components/MapLocation.vue';
+
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+onMounted(() => {
+    gsap.from(".reach-us .reach-us-header", {
+        y: 200,
+        opacity: 0.5,
+        duration: 0.6,
+        ease: "ease",
+        scrollTrigger: {
+            trigger: ".reach-us",
+            start: "top 88%",
+            end: "top 82%",
+        }
+    });
+
+    gsap.from(".reach-us .contact-form-map ", {
+        y: 100,
+        scale: 0.8,
+        opacity: 0.5,
+        duration: 1,
+        ease: "ease",
+        scrollTrigger: {
+            trigger: ".reach-us .reach-us-header",
+            start: "top 90%",
+            end: "top 80%",
+        }
+    });
+});
 
 defineProps({
     title: {
